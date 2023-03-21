@@ -4,8 +4,8 @@
 
 ### easy_temp
 
-I initially thought it was some kind of path traversal vulnerability for nginx. However, it wouldn't work. The value of the path was getting reflected back so I decided to try ``server-side template injection`` and it worked. I pulled a random working payload from [swisskeyrepo](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md). That gave me ``remote code execution``. belThe flag was in ``/etc/passwd``.
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087035703659085954/image.png)
+I initially thought it was some kind of path traversal vulnerability for nginx. However, it wouldn't work. The value of the path was getting reflected back so I decided to try ``server-side template injection`` and it worked. I pulled a random working payload from [swisskeyrepo](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md). That gave me ``remote code execution``. The flag was in ``/etc/passwd``.
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/easy_temp?raw=true)
 
 ### T-Jungle
 
@@ -21,16 +21,16 @@ The source code looked like this:
 ```
 
 As said in [this article](https://owasp.org/www-pdf-archive/PHPMagicTricks-TypeJuggling.pdf), PHP, for loose comparison, if PHP decides both operands look like numbers even if they are actually strings, it will convert them both and perform a numeric comparison. So, let's take passwd as ``240610708``, whose md5 is ``0e462097431906509019562988736854``. So it converts both ``0e462097431906509019562988736854`` and ``0e514198421367523082276382979135``. They get converted to ``int(0)`` and pass the check, giving us the flag.
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087033453595336734/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/T_Jungle?raw=true)
 
 ### CV_pwner
 
 We are greeted with a form to submit our resume. Trying to upload a text file tell us that the server will only allow us to upload pdfs. That was easily taken care of by changing the ``content-type`` to ``application/pdf``. Submitting it tells us they will review it and get back to us shortly. Well, I was confused for a bit. *Where is our uploaded file? What am I supposed to do here?* I tried looking for the file in ``/uploads`` but no luck. So I ran ``dirsearch`` on the url. That gave me the ``/upload`` endpoint with the uploaded files. Go figure. Now the ``original filename we give did not change on upload``. Seeing as it was a ``PHP server``, I uploaded a ``.htaccess`` with the lines ``
 AddType application/x-httpd-php .pdf
 ``. I think any extension would work, but heck, why not pdf? Then I uploaded a simple ``php webshell`` with a filename like ``shell.pdf``. I got the flag from either ``/etc/passwd`` (or possibly ``/flag.txt``, I don't remember clearly).
-![img](https://cdn.discordapp.com/attachments/875457441574297623/1087038703769235466/image.png)
-![img](https://cdn.discordapp.com/attachments/875457441574297623/1087038643127980082/image.png)
-![img](https://cdn.discordapp.com/attachments/875457441574297623/1087038759708672050/image.png)
+![img](https://github.com/navy356/InfoSec23/blob/main/images/CV?raw=true)
+![img](https://github.com/navy356/InfoSec23/blob/main/images/CV2?raw=true)
+![img](https://github.com/navy356/InfoSec23/blob/main/images/CV3?raw=true)
 
 
 ### R!ck secrets
@@ -126,19 +126,19 @@ print(dump)
 ```
 
 This is my script which does the job. I am using a ``lambda function`` to import os and execute any command I want. A reverse shell in this case. That sql stuff was just me trying to get rick's password but all we needed to do was cat `/etc/passwd` to get the flag.
-![exec](https://cdn.discordapp.com/attachments/875457441574297623/1087045094907060224/image.png)
-![rick](https://cdn.discordapp.com/attachments/875457441574297623/1087045028439932938/image.png)
-![login](https://cdn.discordapp.com/attachments/875457441574297623/1087045000421974267/image.png)
+![exec](https://github.com/navy356/InfoSec23/blob/main/images/rick1?raw=true)
+![rick](https://github.com/navy356/InfoSec23/blob/main/images/rick2?raw=true)
+![login](https://github.com/navy356/InfoSec23/blob/main/images/rick3?raw=true)
 
 
 ### Anonymax
 
 We have a login page and the credentials are, once again, in the html comments. Upon logging in, we come across a page which allows us to upload ``png,jpeg`` or some other images. The file name is preserved in this case too. So we can use the same trick as ``CV_pwner`` earlier. Only this time we use ``.png`` instead of ``.pdf``.
 
-![creds](https://cdn.discordapp.com/attachments/875457441574297623/1087045737474445382/image.png)
-![htaccess](https://cdn.discordapp.com/attachments/875457441574297623/1087046444818636810/image.png)
-![sehll](https://cdn.discordapp.com/attachments/875457441574297623/1087046360567656448/image.png)
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087046304078774334/image.png)
+![creds](https://github.com/navy356/InfoSec23/blob/main/images/anon1?raw=true)
+![htaccess](https://github.com/navy356/InfoSec23/blob/main/images/anon2?raw=true)
+![sehll](https://github.com/navy356/InfoSec23/blob/main/images/anon3?raw=true)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/anon4?raw=true)
 
 ### Memelord
 
@@ -301,8 +301,8 @@ def Main():
 Main()
 
 ```
-![sql](https://cdn.discordapp.com/attachments/875457441574297623/1087073049196646471/image.png)
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087072986080743544/image.png)
+![sql](https://github.com/navy356/InfoSec23/blob/main/images/mem1?raw=true)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/mem2?raw=true)
 ### Extreme Bypass
 This is a ``server-side template injection filter bypass`` challenge. This is the filter we need to bypass: 
 ```
@@ -390,7 +390,7 @@ hack()
 ```
 
 And there go. The flag was in ``/flag.txt`` or something.
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087069636798980176/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/extreme_bypass?raw=true)
 
 ## Malware Reverse Engineering
 
@@ -410,14 +410,14 @@ for i in range(len(b)):
 
 print(flag)
 ```
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087076846916612136/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/exclus1ve?raw=true)
 
 ### Cool PYC
 
 So running file on the given binary, its an ELF binary. I opened it in ida to see this:
-![ida](https://cdn.discordapp.com/attachments/875457441574297623/1087029793389826129/image.png)
+![ida](https://github.com/navy356/InfoSec23/blob/main/images/cool_pyc1?raw=true)
 Note the ``pyinstaller``. I looked up writeups and found out we can just use ``pyinstaller_extracter``. Running it on ``cool_pyc`` generated a directory with extracted contents. There was an actual pyc file in this one. I tried (unsuccessfully) using ``uncompyle6``. python3.9 which the pyc was for was not supported. I tried running strings to see if could get anything useful:
-![strings](https://cdn.discordapp.com/attachments/875457441574297623/1087032513131712612/image.png)
+![strings](https://github.com/navy356/InfoSec23/blob/main/images/cool_pyc2?raw=true)
 ``RkxBR3tIZXJlSUFNX0hpZGluZ0hlcmUhfQ==`` gives the flag ``FLAG{HereIAM_HidingHere!}`` on base64 decoding.
 
 ### ASM_v3
@@ -528,57 +528,57 @@ for i in flag:
 print(f)
 ```
 I get:
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087040354781503489/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/asm?raw=true)
 
 It didn't seem correct so I tried to guess what it could be and ``FLAG{_K3ep_0n_Sh1ning_}`` got accepted.
 
 ## Digital Forensics
 ### Magic Byte5
 So we get a ``flag.jpg`` file. 
-![hexedit](https://cdn.discordapp.com/attachments/875457441574297623/1087043501017018499/image.png)
+![hexedit](https://github.com/navy356/InfoSec23/blob/main/images/magic1?raw=true)
 Seeing from the ``IHDR`` we just need to change the magic bytes to those for a png. 
-![hexedit](https://cdn.discordapp.com/attachments/875457441574297623/1087044026743652424/image.png)
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087044248119025735/image.png)
+![hexedit](https://github.com/navy356/InfoSec23/blob/main/images/magic2?raw=true)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/magic3?raw=true)
 
 ### Out of Sight
 We get a ``jpg`` file. I ran ``stegoveritas`` on it which gave me a ``zip file`` and a password ``Sup3xrCx3t``. Unzipping gave the flag.
-![secret](https://cdn.discordapp.com/attachments/875457441574297623/1087052284959146084/image.png)
-![zip](https://cdn.discordapp.com/attachments/875457441574297623/1087052352357421116/image.png)
+![secret](https://github.com/navy356/InfoSec23/blob/main/images/out_of_sight1?raw=true)
+![zip](https://github.com/navy356/InfoSec23/blob/main/images/out_of_sight2?raw=true)
 
 ### Xerox
 Just used ``volatility``. Found a ``pastebin`` link which gave the flag from the clipboard.
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087057288327598100/image.png)
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087057505672245379/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/xerox1?raw=true)
+![](https://github.com/navy356/InfoSec23/blob/main/images/xerox2?raw=true)
 
 ### tw1ns
 Since we got an ``.hccapx`` file, I found [this writeup](https://ctftime.org/writeup/29598) online and tried to run hashcat. However it gave me this:
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087096895270301817/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/tw1ns?raw=true)
 In the linked blog, they run this command:
 ```hcxpcapngtool -o hash.hc22000 -E wordlist dumpfile.pcapng```
 So first I converted the ``hccapx`` to a ``cap`` file so that ``hcxpcapngtool`` can process it.
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087098261338329088/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/tw1ns2?raw=true)
 hccapx2cap from the aur wouldn't work on my system so I download it from github.
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087103301226610728/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/tw1ns3?raw=true)
 Unfortunaly hashcat would not run on my system due to nvidia driver issues so I followed [this writeup](https://www.hackingarticles.in/wireless-penetration-testing-password-cracking/) to do it with john.
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087104256068288574/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/tw1ns4?raw=true)
 So the flag is ``flag{5C:A6:E6:FB:24:42_matrix999}``.
 
 ### Ph0n3
 I unzipped the given image to see the system. I tried installing autopsy but of course it won't run on my system. 
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087092824060723331/image.png)Now, first we have to find the pattern lock and as per [this writeup](https://ctftime.org/writeup/18780) it's at ``/system/gesture.key``. Then I used CTFALC to crack the gesture.
-![crack](https://cdn.discordapp.com/attachments/875457441574297623/1087094095849209856/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/phon1?raw=true)Now, first we have to find the pattern lock and as per [this writeup](https://ctftime.org/writeup/18780) it's at ``/system/gesture.key``. Then I used CTFALC to crack the gesture.
+![crack](https://github.com/navy356/InfoSec23/blob/main/images/phon2?raw=true)
 
 As for the downloaded file, I found this while browsing in vscode:
-![](https://cdn.discordapp.com/attachments/875457441574297623/1087094456689360996/image.png)
+![](https://github.com/navy356/InfoSec23/blob/main/images/phon3?raw=true)
 
 Therefore the flag is ``flag{240156378_ed91c1078694d0cc}``
 ## Mobile Security
 
 ### Decryptor 
 Decompiling the apk with ``apklab`` reveals ``aes encrypted flag``, ``key``,``key_iv``.
-![values](https://cdn.discordapp.com/attachments/875457441574297623/1087058281303912458/image.png)
+![values](https://github.com/navy356/InfoSec23/blob/main/images/dec1?raw=true)
 There is also this AES encryption file:
-![aes](https://cdn.discordapp.com/attachments/875457441574297623/1087058354444185640/image.png)
+![aes](https://github.com/navy356/InfoSec23/blob/main/images/dec2?raw=true)
 I wrote the decryption in a copied java file:
 ```
 import java.util.Base64;
@@ -652,23 +652,23 @@ class AES {
 }
 ```
 
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087059455323160718/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/dec3?raw=true)
 
 ### Evil-Access
 Running the app on android studio, it's a ``flutter`` app. I decompiled it using ``apklab``. Searching online I found that there is a ``kernel_blob.bin`` file in ``assets/flutter_assets``. Running ``strings`` on it reveals some part of the source code.
-![flutter](https://cdn.discordapp.com/attachments/875457441574297623/1087060128399884338/image.png)
+![flutter](https://github.com/navy356/InfoSec23/blob/main/images/evil1?raw=true)
 The login credentials are there in the source encoded in base64. However we can directly get the flag.
-![concat](https://cdn.discordapp.com/attachments/875457441574297623/1087060155495088240/image.png)
+![concat](https://github.com/navy356/InfoSec23/blob/main/images/evil2?raw=true)
 by concatenating these 8 strings.
 
 ### Rooter 
 Once again I decompiled this apk using apklab. The main function has this function:
-![Main](https://cdn.discordapp.com/attachments/875457441574297623/1087061336833404949/image.png)
+![Main](https://github.com/navy356/InfoSec23/blob/main/images/rooter1?raw=true)
 The generate function gives the flag if run with the argument "Game_Stranger". In the above picture, the value was something else. I tried to patch it to that and recompile but it did not work.
-![generate](https://cdn.discordapp.com/attachments/875457441574297623/1087061884705976451/image.png)
+![generate](https://github.com/navy356/InfoSec23/blob/main/images/rooter2?raw=true)
 
 These functions need to be result in ``true`` for us to hit the generate function.
-![check](https://cdn.discordapp.com/attachments/875457441574297623/1087061968034222180/image.png)
+![check](https://github.com/navy356/InfoSec23/blob/main/images/rooter3?raw=true)
 
 I tried to patch the app and it did not work so I just used ``frida``.
 My code is:
@@ -695,15 +695,15 @@ Java.perform(function() {
 });
 ```
 I am basically overriding checkroot and checknotroot to always make them return true. I am also overriding the generate function and forcing the argument to be ``Game_Strange`` instead of ``myValue`` which is the default.
-![frida](https://cdn.discordapp.com/attachments/875457441574297623/1087070123195629638/image.png)
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087067910767382669/image.png)
+![frida](https://github.com/navy356/InfoSec23/blob/main/images/rooter4?raw=true)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/rooter5?raw=true)
 
 ### es-es-pin
 In this case, I decompiled once again and saw this function:
-![java](https://cdn.discordapp.com/attachments/875457441574297623/1087073892742463498/image.png)
+![java](https://github.com/navy356/InfoSec23/blob/main/images/espin1?raw=true)
 I read writeups and tried to open the jni library in ghidra. Frankly, I couldn't make heads or tails of it.
 The app wouldn't even run on android studio so I decided to try and look at logs.
-![error](https://cdn.discordapp.com/attachments/875457441574297623/1087073811184238612/image.png)
+![error](https://github.com/navy356/InfoSec23/blob/main/images/espin2?raw=true)
 Well a quick search on google told me how to fix it. Behold, my updated ``AndroidManifest.xml ``
 ```
 <?xml version="1.0" encoding="UTF-8"?>  <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="33" android:compileSdkVersionCodename="13" package="com.io.sslpinner" platformBuildVersionCode="33" platformBuildVersionName="13">  <permission android:name="com.io.sslpinner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature" />  <uses-permission android:name="com.io.sslpinner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />  <uses-permission android:name="android.permission.INTERNET" />  <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:dataExtractionRules="@xml/data_extraction_rules" android:debuggable="true" android:fullBackupContent="@xml/backup_rules" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true" android:theme="@style/Theme.Sslpinner" android:networkSecurityConfig="@xml/nsc_mitm">  <activity android:exported="true" android:name="com.io.sslpinner.MainActivity">  <intent-filter>  <action android:name="android.intent.action.MAIN" />  <category android:name="android.intent.category.LAUNCHER" />  </intent-filter>  <meta-data android:name="android.app.lib_name" android:value="" />  </activity>  <provider android:authorities="com.io.sslpinner.androidx-startup" android:exported="false" android:name="androidx.startup.InitializationProvider">  <meta-data android:name="androidx.emoji2.text.EmojiCompatInitializer" android:value="androidx.startup" />  <meta-data android:name="androidx.lifecycle.ProcessLifecycleInitializer" android:value="androidx.startup" />  </provider>  </application>  </manifest>
@@ -714,36 +714,36 @@ where I added
 ```
 
 I used apklab to rebuild the apk and the logs gave me the flag:
-![ssl](https://cdn.discordapp.com/attachments/875457441574297623/1087073594925908129/image.png)
+![ssl](https://github.com/navy356/InfoSec23/blob/main/images/espin3?raw=true)
 
 ### OTP_Slayer
 Once again, I decompiled the apk. I came across this function:
-![otp](https://cdn.discordapp.com/attachments/875457441574297623/1087077366574100541/image.png)
+![otp](https://github.com/navy356/InfoSec23/blob/main/images/otp1?raw=true)
 I found the url it is posting to in ``strings.xml``
-![url](https://cdn.discordapp.com/attachments/875457441574297623/1087077489001631825/image.png)
+![url](https://github.com/navy356/InfoSec23/blob/main/images/otp2?raw=true)
 I created a new user using the ``newUser.php`` in the same ``strings.xml`` file.
-![newuser](https://cdn.discordapp.com/attachments/875457441574297623/1087078383122403328/image.png)
+![newuser](https://github.com/navy356/InfoSec23/blob/main/images/otp3?raw=true)
 Then I tried entering the projected otp:
-![login](https://cdn.discordapp.com/attachments/875457441574297623/1087078695497367552/image.png)
+![login](https://github.com/navy356/InfoSec23/blob/main/images/otp4?raw=true)
 The OTP was expired so I tried another number:
-![login](https://cdn.discordapp.com/attachments/875457441574297623/1087078755106832414/image.png)
+![login](https://github.com/navy356/InfoSec23/blob/main/images/otp5?raw=true)
 I tried a lot of things now. I used dirsearch and found a ``/db.php`` endpoint. So I tried sql injection. I went through the apk source code to find anything more useful but I couldn't so I thought maybe the next otp may be correct might mean the otp is above 446620 and decided to bruteforce. I did try bruteforcing from 0 but quickly gave up and decided to start from 446620.
 So i ran hydra.
-![hydra](https://cdn.discordapp.com/attachments/875457441574297623/1087079617493483630/image.png)
+![hydra](https://github.com/navy356/InfoSec23/blob/main/images/otp6?raw=true)
 
 This otp gave m the flag. Turns out it is a static value.
-![otp](https://cdn.discordapp.com/attachments/875457441574297623/1087079674942853140/image.png)
+![otp](https://github.com/navy356/InfoSec23/blob/main/images/otp7?raw=true)
 
 ## Cryptography
 ### double_or_nothing
 We are given this data ``Data: Umt4QlIzdGxZWE41VUdWaFdsbGZjbWxuYUhRL2ZRbz0K``.
 It looks like ``base64`` string and going by the challenge name it's probably ``double base64``. I popped it in CyberChef and got the flag.
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087080315568263370/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/double?raw=true)
 
 ### Silly Freemason
-![challenge](https://cdn.discordapp.com/attachments/875457441574297623/1087080700496326656/image.png)
+![challenge](https://github.com/navy356/InfoSec23/blob/main/images/free1?raw=true)
 [decode.fr](https://www.dcode.fr/pigpen-cipher) has a decoder for this.
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087081082475794573/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/free2?raw=true)
 
 ### Riv
 We are given the following data:
@@ -767,7 +767,7 @@ ct = 111558645679006394985384019922106344256390245431545304101942130922177467904
 m = libnum.nroot(ct, e)
 print(long_to_bytes(m))
 ```
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087082288325599293/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/riv?raw=true)
 
 ### G(OLD)
 The challenge description:
@@ -802,7 +802,7 @@ for i in range(len(cipher)):
 
 print(f)
 ```
-![flag](https://cdn.discordapp.com/attachments/875457441574297623/1087083609413910652/image.png)
+![flag](https://github.com/navy356/InfoSec23/blob/main/images/gold?raw=true)
 
 ### IPad
 We are a given a ``challenge.py`` file. 
@@ -878,4 +878,4 @@ while True:
 ```
 This script simply opens a process, tries to send a byte from the SECRET'S charset till it is correct. If not, it will open another process and try again.
 
-![byte](https://cdn.discordapp.com/attachments/875457441574297623/1087090157225787392/image.png)
+![byte](https://github.com/navy356/InfoSec23/blob/main/images/ipad?raw=true)
